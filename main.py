@@ -28,3 +28,4 @@ label_error.grid(row=2, column=0, columnspan=2)
 Button(root, text="Zaloguj", command=try_login).grid(row=3, column=0, columnspan=2, pady=10)
 
 root.mainloop()
+

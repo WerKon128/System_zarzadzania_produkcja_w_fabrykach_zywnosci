@@ -18,7 +18,7 @@ def login(users: list, login_input: str, password_input: str) -> bool:
             return True
     return False
 
-#  FABRYKI
+# ========== FABRYKI ==========
 
 def add_factory(factories: list, name: str, location: str, production: str) -> None:
     factories.append({'name': name, 'location': location, 'production': production})
