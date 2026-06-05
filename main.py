@@ -8,6 +8,7 @@ from factory_lib.controller import *
 root = Tk()
 root.title("System zarządzania produkcją w fabrykach żywności")
 root.geometry("1200x800")
+root.withdraw()
 
 notebook = ttk.Notebook(root)
 
@@ -536,7 +537,6 @@ def show_employees_by_factory():
     for e in result:
         listbox_views.insert(END, f"{e['name']} – {e['role']}")
 
-Dod
 def show_purchases_by_client():
     client_name = entry_filter_client.get()
     listbox_views.delete(0, END)
@@ -546,5 +546,38 @@ def show_purchases_by_client():
         return
     for p in result:
         listbox_views.insert(END, p)
+
+def show_login():
+    login_window = Toplevel(root)
+    login_window.title("Logowanie")
+    login_window.geometry("300x180")
+    login_window.grab_set()
+    login_window.protocol("WM_DELETE_WINDOW", root.destroy)
+
+    Label(login_window, text="Login:").grid(row=0, column=0, padx=10, pady=10)
+    Label(login_window, text="Hasło:").grid(row=1, column=0, padx=10, pady=10)
+
+    entry_login = Entry(login_window)
+    entry_pass = Entry(login_window, show="*")
+    entry_login.grid(row=0, column=1, padx=10, pady=10)
+    entry_pass.grid(row=1, column=1, padx=10, pady=10)
+
+    label_error = Label(login_window, text="", fg="red")
+    label_error.grid(row=2, column=0, columnspan=2)
+
+    def try_login():
+        if login(users, entry_login.get(), entry_pass.get()):
+            login_window.destroy()
+            root.deiconify()
+            load_factory_markers()
+            load_client_markers()
+            load_employee_markers()
+        else:
+            label_error.config(text="Nieprawidłowy login lub hasło!")
+
+    Button(login_window, text="Zaloguj", command=try_login).grid(row=3, column=0, columnspan=2, pady=10)
+
+
+show_login()
 
 root.mainloop()
