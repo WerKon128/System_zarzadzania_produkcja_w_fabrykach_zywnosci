@@ -60,3 +60,34 @@ def get_clients(clients: list) -> list:
 
 def get_clients_by_factory(clients: list, factory_name: str) -> list:
     return [c for c in clients if c['company'] == factory_name]
+
+# ========== PRACOWNICY ==========
+
+def add_employee(employees: list, name: str, location: str, company: str, role: str) -> None:
+    employees.append({'name': name, 'location': location, 'company': company, 'role': role})
+
+
+def remove_employee(employees: list, index: int) -> None:
+    employees.pop(index)
+
+
+def update_employee(employees: list, index: int, name: str, location: str, company: str, role: str) -> None:
+    employees[index]['name'] = name
+    employees[index]['location'] = location
+    employees[index]['company'] = company
+    employees[index]['role'] = role
+
+
+def get_employees(employees: list) -> list:
+    return employees
+
+
+def get_employees_by_factory(employees: list, factory_name: str) -> list:
+    return [e for e in employees if e['company'] == factory_name]
+
+
+def get_purchases_by_client(clients: list, client_name: str) -> list:
+    for client in clients:
+        if client['name'] == client_name:
+            return client['purchases']
+    return []
