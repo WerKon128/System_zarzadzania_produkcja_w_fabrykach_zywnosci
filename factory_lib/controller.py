@@ -36,3 +36,27 @@ def update_factory(factories: list, index: int, name: str, location: str, produc
 
 def get_factories(factories: list) -> list:
     return factories
+
+# ========== KLIENCI ==========
+
+def add_client(clients: list, name: str, location: str, company: str, purchases: list) -> None:
+    clients.append({'name': name, 'location': location, 'company': company, 'purchases': purchases})
+
+
+def remove_client(clients: list, index: int) -> None:
+    clients.pop(index)
+
+
+def update_client(clients: list, index: int, name: str, location: str, company: str, purchases: list) -> None:
+    clients[index]['name'] = name
+    clients[index]['location'] = location
+    clients[index]['company'] = company
+    clients[index]['purchases'] = purchases
+
+
+def get_clients(clients: list) -> list:
+    return clients
+
+
+def get_clients_by_factory(clients: list, factory_name: str) -> list:
+    return [c for c in clients if c['company'] == factory_name]
