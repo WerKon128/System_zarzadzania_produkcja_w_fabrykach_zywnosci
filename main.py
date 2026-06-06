@@ -494,9 +494,11 @@ load_employee_markers()
 
 frame_views_filters = Frame(tab_views)
 frame_views_results = Frame(tab_views)
+frame_views_map = Frame(tab_views)
 
 frame_views_filters.grid(row=0, column=0, padx=10, pady=10, sticky=N)
 frame_views_results.grid(row=0, column=1, padx=10, pady=10, sticky=N)
+frame_views_map.grid(row=0, column=2, padx=10, pady=10, sticky=N)
 
 Label(frame_views_filters, text="Filtry:", font=("Arial", 10, "bold")).grid(row=0, column=0, columnspan=2)
 
@@ -515,35 +517,60 @@ Label(frame_views_results, text="Wyszukiwarka:", font=("Arial", 10, "bold")).gri
 listbox_views = Listbox(frame_views_results, width=50, height=20)
 listbox_views.grid(row=1, column=0)
 
+map_views = tkintermapview.TkinterMapView(frame_views_map, width=500, height=400)
+map_views.set_position(52.2, 21.0)
+map_views.set_zoom(6)
+map_views.grid(row=0, column=0)
+
 
 def show_clients_by_factory():
     factory_name = entry_filter_factory.get()
     listbox_views.delete(0, END)
+    map_views.delete_all_marker()
     result = get_clients_by_factory(clients, factory_name)
     if not result:
         listbox_views.insert(END, "Brak klientów dla tej fabryki")
         return
     for c in result:
         listbox_views.insert(END, f"{c['name']} – {c['location']}")
+        try:
+            coords = get_coordinates(c['location'])
+            map_views.set_marker(coords[0], coords[1], text=c['name'])
+        except:
+            pass
 
 
 def show_employees_by_factory():
     factory_name = entry_filter_factory.get()
     listbox_views.delete(0, END)
+    map_views.delete_all_marker()
     result = get_employees_by_factory(employees, factory_name)
     if not result:
         listbox_views.insert(END, "Brak pracowników dla tej fabryki")
         return
     for e in result:
         listbox_views.insert(END, f"{e['name']} – {e['role']}")
+        try:
+            coords = get_coordinates(e['location'])
+            map_views.set_marker(coords[0], coords[1], text=e['name'])
+        except:
+            pass
 
 def show_purchases_by_client():
     client_name = entry_filter_client.get()
     listbox_views.delete(0, END)
+    map_views.delete_all_marker()
     result = get_purchases_by_client(clients, client_name)
     if not result:
         listbox_views.insert(END, "Brak zakupów dla tego klienta")
         return
+    for c in clients:
+        if c['name'] == client_name:
+            try:
+                coords = get_coordinates(c['location'])
+                map_views.set_marker(coords[0], coords[1], text=c['name'])
+            except:
+                pass
     for p in result:
         listbox_views.insert(END, p)
 
