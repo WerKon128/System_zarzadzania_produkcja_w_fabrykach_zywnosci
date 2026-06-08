@@ -107,13 +107,16 @@ def add_factory_gui():
     if not name or not location or not production:
         return
     add_factory(factories, name, location, production)
-    coords = get_coordinates(location)
-    map_factories.set_marker(coords[0], coords[1], text=name)
+    try:
+        coords = get_coordinates(location)
+        marker = map_factories.set_marker(coords[0], coords[1], text=name)
+        factories[-1]['marker'] = marker
+    except:
+        pass
     entry_factory_name.delete(0, END)
     entry_factory_location.delete(0, END)
     entry_factory_production.delete(0, END)
     refresh_factories()
-
 
 def edit_factory_gui():
     i = listbox_factories.curselection()
@@ -261,8 +264,12 @@ def add_client_gui():
     if not name or not location or not company:
         return
     add_client(clients, name, location, company, purchases)
-    coords = get_coordinates(location)
-    map_clients.set_marker(coords[0], coords[1], text=name)
+    try:
+        coords = get_coordinates(location)
+        marker = map_clients.set_marker(coords[0], coords[1], text=name)
+        clients[-1]['marker'] = marker
+    except:
+        pass
     entry_client_name.delete(0, END)
     entry_client_location.delete(0, END)
     entry_client_company.delete(0, END)
@@ -421,14 +428,17 @@ def add_employee_gui():
     if not name or not location or not company or not role:
         return
     add_employee(employees, name, location, company, role)
-    coords = get_coordinates(location)
-    map_employees.set_marker(coords[0], coords[1], text=name)
+    try:
+        coords = get_coordinates(location)
+        marker = map_employees.set_marker(coords[0], coords[1], text=name)
+        employees[-1]['marker'] = marker
+    except:
+        pass
     entry_employee_name.delete(0, END)
     entry_employee_location.delete(0, END)
     entry_employee_company.delete(0, END)
     entry_employee_role.delete(0, END)
     refresh_employees()
-
 
 def edit_employee_gui():
     i = listbox_employees.curselection()
