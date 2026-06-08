@@ -4,7 +4,6 @@ import tkintermapview
 from factory_lib.model import factories, clients, employees, users
 from factory_lib.controller import *
 
-
 root = Tk()
 root.title("System zarządzania produkcją w fabrykach żywności")
 root.geometry("1200x800")
@@ -135,6 +134,14 @@ def edit_factory_gui():
 def save_factory(i):
     update_factory(factories, i, entry_factory_name.get(),
                    entry_factory_location.get(), entry_factory_production.get())
+    if factories[i]['marker']:
+        factories[i]['marker'].delete()
+        factories[i]['marker'] = None
+    try:
+        coords = get_coordinates(factories[i]['location'])
+        factories[i]['marker'] = map_factories.set_marker(coords[0], coords[1], text=factories[i]['name'])
+    except:
+        pass
     entry_factory_name.delete(0, END)
     entry_factory_location.delete(0, END)
     entry_factory_production.delete(0, END)
@@ -171,7 +178,7 @@ def load_factory_markers():
         except:
             pass
 
-load_factory_markers()
+
 
 # ========== KLIENCI ==========
 
@@ -295,9 +302,16 @@ def edit_client_gui():
 
 
 def save_client(i):
+    if clients[i]['marker']:
+        clients[i]['marker'].delete()
     purchases = [p.strip() for p in entry_client_purchases.get().split(',')]
     update_client(clients, i, entry_client_name.get(),
                   entry_client_location.get(), entry_client_company.get(), purchases)
+    try:
+        coords = get_coordinates(clients[i]['location'])
+        clients[i]['marker'] = map_clients.set_marker(coords[0], coords[1], text=clients[i]['name'])
+    except:
+        pass
     entry_client_name.delete(0, END)
     entry_client_location.delete(0, END)
     entry_client_company.delete(0, END)
@@ -335,7 +349,7 @@ def load_client_markers():
 
 
 refresh_clients()
-load_client_markers()
+
 
 # ========== PRACOWNICY ==========
 
@@ -458,9 +472,16 @@ def edit_employee_gui():
 
 
 def save_employee(i):
+    if employees[i]['marker']:
+        employees[i]['marker'].delete()
     update_employee(employees, i, entry_employee_name.get(),
                     entry_employee_location.get(), entry_employee_company.get(),
                     entry_employee_role.get())
+    try:
+        coords = get_coordinates(employees[i]['location'])
+        employees[i]['marker'] = map_employees.set_marker(coords[0], coords[1], text=employees[i]['name'])
+    except:
+        pass
     entry_employee_name.delete(0, END)
     entry_employee_location.delete(0, END)
     entry_employee_company.delete(0, END)
@@ -498,7 +519,7 @@ def load_employee_markers():
 
 
 refresh_employees()
-load_employee_markers()
+
 
 # ========== WYSZUKIWARKA ==========
 
